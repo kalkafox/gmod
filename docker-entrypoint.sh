@@ -38,6 +38,7 @@ function permfix {
 #Update function.
 function update {
   echo "$LOG Starting update."
+  permfix
   sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 +quit
   echo "$LOG Update finished!"
 }
@@ -54,7 +55,8 @@ function main {
   echo $LOG $MSG
 }
 
-if [ $1 == "/bin/bash" ]; then # tunnel into bash incase we need it
+# tunnel into bash incase we need it
+if [ $1 == "/bin/bash" ]; then
   echo "$LOG Tunneling to /bin/bash!"
   /bin/bash
   exit
