@@ -69,9 +69,9 @@ function main {
     fi
     echo "$LOG **MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
     if [ ! -d "$ADDONS_DIR/d_admin_config" ]; then
-      sudo -u mkdir -p $ADDONS_DIR/d_admin_config/lua/da
+      sudo -u $USER mkdir -p $ADDONS_DIR/d_admin_config/lua/da
       sudo -u $USER git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
-      sudo -u cp $ADDONS_DIR/d_admin/lua/da/sv_config.lua.template $ADDONS_DIR/d_admin_config/lua/da/sv_config.lua
+      sudo -u $USER cp $ADDONS_DIR/d_admin/lua/da/sv_config.lua.template $ADDONS_DIR/d_admin_config/lua/da/sv_config.lua
       echo "$LOG Go to d_admin_config in the garrysmod addons directory and edit the file according to your settings, then relaunch the container."
       exit
     fi
