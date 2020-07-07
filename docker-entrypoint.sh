@@ -48,9 +48,11 @@ function update {
   sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $BETA +quit
   if [ "$BETA" == "x86_64" ]; then
     echo $BETA > server_version
+    VERSION=$(head -n 1 server_version)
     echo "$LOG Server version is now $BETA"
   else
     echo $BETA > server_version
+    VERSION=$(head -n 1 server_version)
     echo "$LOG Server version is now NONE -- only x86_64 is supported for now."
   fi
   echo "$LOG Update finished!"
