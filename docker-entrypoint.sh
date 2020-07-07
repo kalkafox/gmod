@@ -52,12 +52,6 @@ function update {
   fi
   echo "$LOG Update finished!"
   echo "$LOG Checking if d_admin should be downloaded..."
-  if [ "$D_ADMIN" == "true" ]; then
-    echo "$LOG d_admin is flagged to be downloaded!"
-    git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
-  else
-    echo "$LOG d_admin is not being downloaded. Moving on!"
-  fi
 }
 
 
@@ -65,6 +59,12 @@ function update {
 function main {
   echo "$LOG Starting main function..."
   permfix
+  if [ "$D_ADMIN" ]; then
+    echo "$LOG d_admin is flagged to be downloaded!"
+    git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
+  else
+    echo "$LOG d_admin is not being downloaded. Moving on!"
+  fi
   if [ "$UPDATE" ]; then
     echo "$LOG The server is flagged to be updated! Checking now."
     update
