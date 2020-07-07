@@ -108,7 +108,7 @@ function main {
   fi
 
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
-  echo $LOG $MSG
+  log $MSG
 }
 
 # tunnel into bash incase we need it
