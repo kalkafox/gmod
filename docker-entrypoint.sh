@@ -62,18 +62,12 @@ function main {
   echo "$LOG Starting main function..."
   permfix
   if [ "$D_ADMIN" ]; then
+    echo "$LOG d_admin is flagged to be downloaded!"
+    echo "$LOG **MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
     if [ ! "$TOKEN" ]; then
       echo "$LOG Installing d_admin requires you to have a token for GitLab to be able to read the repository. set it with -e TOKEN=<token>"
       exit
     fi
-    echo "$LOG d_admin is flagged to be downloaded!"
-    echo "$LOG Do you have a MariaDB/MySQL server? Reply yes or no."
-    read mariadb
-    if [ "$mariadb" == "no" ]; then
-      echo "$LOG You will need one for d_admin to be installed. Re-launch the container without the -e D_ADMIN environment."
-      exit
-    fi
-    echo "$LOG **MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
     if [ ! -d "$ADDONS_DIR/d_admin_config" ]; then
       $SUDO mkdir -p $ADDONS_DIR/d_admin_config/lua/da
       $SUDO git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
