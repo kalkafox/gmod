@@ -27,7 +27,7 @@ fi
 permfix() {
   log "Changing permissions to $UID and $GID..."
   if [ $UID != 1000 ]; then
-    sudo groupadd -v -g $GID $USER
+    sudo groupadd -g $GID $USER
     sudo useradd -m -u $UID -g $GID $USER
     sudo echo $USER' ALL=(ALL:ALL) NOPASSWD:ALL' > sudouser
     sudo echo 'steam ALL=(ALL:ALL) NOPASSWD:ALL' >> sudouser
