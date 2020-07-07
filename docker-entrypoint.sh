@@ -29,7 +29,9 @@ fi
 
 function permfix {
   echo "$LOG Changing permissions to $UID and $GID..."
+  sudo ln -s /home/steam/.steam /home/$USER/.steam
   if [ $UID != 1000 ]; then
+    sudo ln -s /home/steam/.steam /home/$USER/.steam
     sudo groupadd -g $GID $USER
     sudo useradd -m -u $UID -g $GID $USER
     sudo echo $USER' ALL=(ALL:ALL) NOPASSWD:ALL' > sudouser
@@ -47,16 +49,16 @@ function permfix {
 function update {
   echo "$LOG Starting update."
   permfix
-  sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $BETA +quit
   if [ "$BETA" == "x86_64" ]; then
     echo $BETA > server_version
     VERSION=$(head -n 1 server_version)
     echo "$LOG Server version is now $BETA"
   else
-    echo $BETA > server_version
-    VERSION=$(head -n 1 server_version)
+    echo "NONE" > server_version
+    VERSION="NONE"
     echo "$LOG Server version is now NONE -- only x86_64 is supported for now."
   fi
+  sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $BETA +quit
   echo "$LOG Update finished!"
   echo "$LOG Checking if d_admin should be downloaded..."
   if [ "$D_ADMIN" == "true" ]; then
