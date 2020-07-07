@@ -5,13 +5,12 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs"
   CI_REGISTRY_USER: "kalka"
   CI_REGISTRY_IMAGE: "index.kalka.io/kalka/gmod"
-  CI_REGISTRY: "docker.io"
 
 services:
   - docker:dind
 
 before_script:
-  - docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  - cat $CI_REGISTRY_PASSWORD | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_PASSWORD"
 
 build-master:
   stage: build
