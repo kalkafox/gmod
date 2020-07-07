@@ -10,15 +10,9 @@ SRCDS_BIN=$GAME_DIR/srcds_run
 STEAMCMD_BIN=/usr/games/steamcmd
 PERMS=$@
 
-# Server version.
-
-touch $GAME_DIR/server_version
-
-VERSION=$(head -n 1 $GAME_DIR/server_version)
-
 # Logging
 TIME=`date "+%Y-%m-%d %H:%M:%S"`
-LOG="[Entrypoint] [$TIME]"
+LOG="[Entrypoint] [$(echo $TIME)]"
 
 if [ -z $1 ]; then
   echo "$LOG The script can have a parameter. Example: +gamemode sandbox +map gm_construct, etc..."
@@ -50,15 +44,12 @@ function update {
   echo "$LOG Starting update."
   permfix
   if [ "$BETA" == "x86_64" ]; then
-    echo $BETA > $GAME_DIR/server_version
-    VERSION=$(head -n 1 $GAME_DIR/server_version)
-    echo "$LOG Server version is now $BETA"
+    echo "$LOG Starting the update for 64-bit."
+    sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta x86_64 +quit
   else
-    echo "NONE" > $GAME_DIR/server_version
-    VERSION="NONE"
-    echo "$LOG Server version is now NONE -- only x86_64 is supported for now."
+    echo "$LOG Starting the update for stable version."
+    sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta NONE +quit
   fi
-  sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $VERSION +quit
   echo "$LOG Update finished!"
   echo "$LOG Checking if d_admin should be downloaded..."
   if [ "$D_ADMIN" == "true" ]; then
@@ -78,25 +69,12 @@ function main {
     echo "$LOG The server is flagged to be updated! Checking now."
     update
   fi
-  if [ "$BETA" == "x86_64" ]; then
-    echo "$LOG The server is flagged to be 64-bit. Starting that now."
-    if [ "$VERSION" != "x86_64" ]; then
-      echo "$LOG The previous version was $VERSION, so we're forcing an update."
-      update
-    fi
-  else
-    echo "$LOG Just checking if the server is still 64-bit."
-    if [ "$VERSION" == "x86_64" ]; then
-      echo "$LOG The previous version was 64-bit, so we're forcing an update."
-      update
-    fi
-  fi
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
   echo $LOG $MSG
 }
 
 # tunnel into bash incase we need it
-if [ $1 == "/bin/bash" ]; then
+if [ "$1" == "/bin/bash" ]; then
   echo "$LOG Tunneling to /bin/bash!"
   /bin/bash
   exit
@@ -109,6 +87,10 @@ else
   echo "$LOG ${USER^^} not detected! Starting update."
   update
   main
+fi
+
+if [ "$BETA" == "x86_64" ]; then
+  SRCDS_BIN=$SRCDS_BIN_x64
 fi
 
 sudo -u $USER $SRCDS_BIN -console $@
