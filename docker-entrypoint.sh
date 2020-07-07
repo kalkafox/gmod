@@ -35,6 +35,7 @@ function permfix {
     sudo cp -R /home/steam/.steam /home/$USER/.steam
     echo "$LOG Finished with permissions!"
   else
+    USER=steam
     sudo chown -R steam:steam {$GAME_DIR,$HOME_DIR/.steam}
   fi
 }
