@@ -24,7 +24,7 @@ else
   PERMS="$@"
 fi
 
-function permfix {
+permfix() {
   log "Changing permissions to $UID and $GID..."
   if [ $UID != 1000 ]; then
     sudo groupadd -g $GID $USER
@@ -44,7 +44,7 @@ function permfix {
 }
 
 #Update function.
-function update {
+update() {
   log "Starting update."
   permfix
   if [ "$BETA" == "x86-64" ]; then
@@ -58,11 +58,7 @@ function update {
   log "Checking if d_admin should be downloaded..."
 }
 
-
-#Main function.
-function main {
-  log "Starting main function..."
-  permfix
+d_admin_flag() {
   if [ "$D_ADMIN" ]; then
     log "d_admin is flagged to be downloaded!"
     log "**MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
@@ -86,10 +82,9 @@ function main {
   else
     log "d_admin is not being downloaded. Moving on!"
   fi
-  if [ "$UPDATE" ]; then
-    log "The server is flagged to be updated! Checking now."
-    update
-  fi
+}
+
+64_bit_flag() {
   if [ "$BETA" == "x86-64" ]; then
     log "Using 64-bit for server..."
     if [ ! -d "$ADDONS_DIR/unixtermcol" ]; then
@@ -105,6 +100,18 @@ function main {
     if [ -d "$ADDONS_DIR/unixtermcol" ]; then
       $SUDO rm {$GARRYSMOD_DIR/lua/bin/gmsv_xterm_x64.dll,$ADDONS_DIR/unixtermcol}
     fi
+  fi
+}
+
+#Main function.
+main() {
+  log "Starting main function..."
+  permfix
+  d_admin_flag
+  64_bit_flag
+  if [ "$UPDATE" ]; then
+    log "The server is flagged to be updated! Checking now."
+    update
   fi
 
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
