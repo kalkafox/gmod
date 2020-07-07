@@ -4,6 +4,8 @@
 # Main binaries & their directories.
 HOME_DIR=/home/steam
 GAME_DIR=$HOME_DIR/$USER
+GARRYSMOD_DIR=$GAME_DIR/garrysmod
+ADDONS_DIR=$GARRYSMOD_DIR/addons
 SRCDS_BIN=$GAME_DIR/srcds_run
 STEAMCMD_BIN=/usr/games/steamcmd
 PERMS=$@
@@ -39,8 +41,15 @@ function permfix {
 function update {
   echo "$LOG Starting update."
   permfix
-  sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 +quit
+  sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $BETA +quit
   echo "$LOG Update finished!"
+  echo "$LOG Checking if d_admin should be downloaded..."
+  if [ "$D_ADMIN" == "true" ]; then
+    echo "$LOG d_admin is flagged to be downloaded!"
+    git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
+  else
+    echo "$LOG d_admin is not being downloaded. Moving on!"
+  fi
 }
 
 
@@ -49,6 +58,7 @@ function main {
   echo "$LOG Starting main function..."
   permfix
   if [ "$UPDATE" ]; then
+    echo "$LOG The server is flagged to be updated! Checking now."
     update
   fi
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
