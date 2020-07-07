@@ -67,8 +67,16 @@ function main {
       echo "$LOG You will need one for d_admin to be installed. Re-launch the container without the -e D_ADMIN environment."
       exit
     fi
+    echo "$LOG **MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
+    if [ ! -d "$ADDONS_DIR/d_admin_config" ]; then
+      mkdir -p $ADDONS_DIR/d_admin_config/lua/da
+      sudo -u $USER git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
+      cp $ADDONS_DIR/d_admin/lua/da/sv_config.lua.template $ADDONS_DIR/d_admin_config/lua/da/sv_config.lua
+      echo "$LOG Go to d_admin_config in the garrysmod addons directory and edit the file according to your settings, then relaunch the container."
+    fi
     echo "$LOG We need to download the reqs if it's not already there."
-    
+    sudo -u mkdir -p $GARRYSMOD_DIR/lua/bin
+    sudo -u $USER wget https://github.com/FredyH/MySQLOO/releases/download/9.6.1/gmsv_mysqloo_linux64.dll -P $GARRYSMOD_DIR/lua/bin
     sudo -u $USER git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
   else
     echo "$LOG d_admin is not being downloaded. Moving on!"
