@@ -12,9 +12,9 @@ PERMS=$@
 
 # Server version.
 
-touch $GARRYSMOD_DIR/server_version
+touch $GAME_DIR/server_version
 
-VERSION=$(head -n 1 $GARRYSMOD_DIR/server_version)
+VERSION=$(head -n 1 $GAME_DIR/server_version)
 
 # Logging
 TIME=`date "+%Y-%m-%d %H:%M:%S"`
@@ -50,11 +50,11 @@ function update {
   echo "$LOG Starting update."
   permfix
   if [ "$BETA" == "x86_64" ]; then
-    echo $BETA > $GARRYSMOD_DIR/server_version
-    VERSION=$(head -n 1 $GARRYSMOD_DIR/server_version)
+    echo $BETA > $GAME_DIR/server_version
+    VERSION=$(head -n 1 $GAME_DIR/server_version)
     echo "$LOG Server version is now $BETA"
   else
-    echo "NONE" > $GARRYSMOD_DIR/server_version
+    echo "NONE" > $GAME_DIR/server_version
     VERSION="NONE"
     echo "$LOG Server version is now NONE -- only x86_64 is supported for now."
   fi
