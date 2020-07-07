@@ -70,7 +70,7 @@ function main {
     echo "$LOG **MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
     if [ ! -d "$ADDONS_DIR/d_admin_config" ]; then
       sudo -u $USER mkdir -p $ADDONS_DIR/d_admin_config/lua/da
-      sudo -u $USER git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
+      sudo -u $USER git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
       sudo -u $USER cp $ADDONS_DIR/d_admin/lua/da/sv_config.lua.template $ADDONS_DIR/d_admin_config/lua/da/sv_config.lua
       echo "$LOG Go to d_admin_config in the garrysmod addons directory and edit the file according to your settings, then relaunch the container."
       exit
@@ -78,7 +78,11 @@ function main {
     echo "$LOG We need to download the reqs if it's not already there."
     sudo -u $USER mkdir -p $GARRYSMOD_DIR/lua/bin
     sudo -u $USER wget https://github.com/FredyH/MySQLOO/releases/download/9.6.1/gmsv_mysqloo_linux64.dll -P $GARRYSMOD_DIR/lua/bin
-    sudo -u $USER git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
+    sudo -u $USER wget https://gitlab.kalka.io/srcds/unixtermcol/-/archive/master/unixtermcol-master.tar.gz -P $GARRYSMOD_DIR
+    sudo -u $USER tar -zxvf $GARRYSMOD_DIR/unixtermcol-master.tar.gz
+    sudo -u $USER cp -R $GARRYSMOD_DIR/unixtermcol-master/{addons,lua} $GARRYSMOD_DIR
+    sudo -u $USER rm $GARRYSMOD_DIR/unixtermcol-master
+    sudo -u $USER git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
   else
     echo "$LOG d_admin is not being downloaded. Moving on!"
   fi
