@@ -78,8 +78,8 @@ function main {
   fi
   if [ "$BETA" == "x86_64" ]; then
     echo "$LOG The server is flagged to be 64-bit. Starting that now."
-    if [ "$VERSION" == "NONE" ]; then
-      echo "$LOG The previous version was NONE, so we're forcing an update."
+    if [ "$VERSION" != "x86_64" ]; then
+      echo "$LOG The previous version was $VERSION, so we're forcing an update."
       update
     fi
   else
