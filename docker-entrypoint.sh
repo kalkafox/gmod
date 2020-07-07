@@ -10,6 +10,10 @@ SRCDS_BIN=$GAME_DIR/srcds_run
 STEAMCMD_BIN=/usr/games/steamcmd
 PERMS=$@
 
+# Server version.
+
+VERSION=$(head -n 1 server_version)
+
 # Logging
 TIME=`date "+%Y-%m-%d %H:%M:%S"`
 LOG="[Entrypoint] [$TIME]"
@@ -42,6 +46,13 @@ function update {
   echo "$LOG Starting update."
   permfix
   sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $BETA +quit
+  if [ "$BETA" == "x86_64" ]; then
+    echo $BETA > server_version
+    echo "$LOG Server version is now $BETA"
+  else
+    echo $BETA > server_version
+    echo "$LOG Server version is now NONE -- only x86_64 is supported for now."
+  fi
   echo "$LOG Update finished!"
   echo "$LOG Checking if d_admin should be downloaded..."
   if [ "$D_ADMIN" == "true" ]; then
@@ -60,6 +71,19 @@ function main {
   if [ "$UPDATE" ]; then
     echo "$LOG The server is flagged to be updated! Checking now."
     update
+  fi
+  if [ "$BETA" == "x86_64" ]; then
+    echo "$LOG The server is flagged to be 64-bit. Starting that now."
+    if [ "$VERSION" == "NONE" ]; then
+      echo "$LOG The previous version was NONE, so we're forcing an update."
+      update
+    fi
+  else
+    echo "$LOG Just checking if the server is still 64-bit."
+    if [ "$VERSION" == "x86_64" ]; then
+      echo "$LOG The previous version was 64-bit, so we're forcing an update."
+      update
+    fi
   fi
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
   echo $LOG $MSG
