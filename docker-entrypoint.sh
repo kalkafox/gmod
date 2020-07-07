@@ -69,6 +69,11 @@ function main {
     echo "$LOG The server is flagged to be updated! Checking now."
     update
   fi
+  if [ "$BETA" == "x86_64" ] && [ -f "$GAME_DIR/srcds_run_x64" ]; then
+    echo "$LOG The server does not have the 64-bit binary! Forcing update."
+    update
+  fi
+
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
   echo $LOG $MSG
 }
