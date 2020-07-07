@@ -29,9 +29,8 @@ fi
 
 function permfix {
   echo "$LOG Changing permissions to $UID and $GID..."
-  sudo ln -s /home/steam/.steam /home/$USER/.steam
+  sudo ln -s /home/$USER/.steam /home/steam/.steam
   if [ $UID != 1000 ]; then
-    sudo ln -s /home/steam/.steam /home/$USER/.steam
     sudo groupadd -g $GID $USER
     sudo useradd -m -u $UID -g $GID $USER
     sudo echo $USER' ALL=(ALL:ALL) NOPASSWD:ALL' > sudouser
@@ -39,6 +38,7 @@ function permfix {
     sudo cp sudouser /etc/sudoers.d
     sudo find $GAME_DIR ! -user $UID -exec sudo chown -R $UID:$GID {} \;
     sudo find $HOME_DIR/.steam ! -user $UID -exec sudo chown -R $UID:$GID {} \;
+    sudo chown steam:steam $GAME_DIR/server_version
     echo "$LOG Finished with permissions!"
   else
     sudo chown -R steam:steam {$GAME_DIR,$HOME_DIR/.steam}
