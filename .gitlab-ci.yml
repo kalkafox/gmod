@@ -3,6 +3,9 @@ image: docker:latest
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: "/certs"
+  CI_REGISTRY_USER: "kalka"
+  CI_REGISTRY_IMAGE: "index.kalka.io/kalka/gmod"
+  CI_REGISTRY: "docker.io"
 
 services:
   - docker:dind
