@@ -70,7 +70,7 @@ function main {
     echo "$LOG The server is flagged to be updated! Checking now."
     update
   fi
-  if [ "$BETA" == "x86_64" ]; then
+  if [ "$BETA" == "x86-64" ]; then
     echo "$LOG Using 64-bit for server..."
     if [ ! -f "$SRCDS_BIN_64" ]; then
       update
@@ -97,7 +97,7 @@ else
   main
 fi
 
-if [ "$BETA" == "x86_64" ]; then
+if [ "$BETA" == "x86-64" ]; then
   SRCDS_BIN=$GAME_DIR/srcds_run_x64
 fi
 
