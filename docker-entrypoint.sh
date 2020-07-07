@@ -90,7 +90,7 @@ else
 fi
 
 if [ "$BETA" == "x86_64" ]; then
-  SRCDS_BIN=$SRCDS_BIN_x64
+  SRCDS_BIN=$GAME_DIR/srcds_run_x64
 fi
 
 sudo -u $USER $SRCDS_BIN -console $@
