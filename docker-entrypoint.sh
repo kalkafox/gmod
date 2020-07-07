@@ -12,6 +12,8 @@ PERMS=$@
 
 # Server version.
 
+touch server_version
+
 VERSION=$(head -n 1 server_version)
 
 # Logging
