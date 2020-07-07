@@ -76,7 +76,7 @@ function main {
       exit
     fi
     echo "$LOG We need to download the reqs if it's not already there."
-    sudo -u mkdir -p $GARRYSMOD_DIR/lua/bin
+    sudo -u $USER mkdir -p $GARRYSMOD_DIR/lua/bin
     sudo -u $USER wget https://github.com/FredyH/MySQLOO/releases/download/9.6.1/gmsv_mysqloo_linux64.dll -P $GARRYSMOD_DIR/lua/bin
     sudo -u $USER git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
   else
