@@ -7,6 +7,7 @@ GAME_DIR=$HOME_DIR/$USER
 GARRYSMOD_DIR=$GAME_DIR/garrysmod
 ADDONS_DIR=$GARRYSMOD_DIR/addons
 SRCDS_BIN=$GAME_DIR/srcds_run
+SRCDS_BIN_64=$GAME_DIR/srcds_run_x64
 STEAMCMD_BIN=/usr/games/steamcmd
 PERMS=$@
 
@@ -69,9 +70,11 @@ function main {
     echo "$LOG The server is flagged to be updated! Checking now."
     update
   fi
-  if [ "$BETA" == "x86_64" ] && [ -f "$GAME_DIR/srcds_run_x64" ]; then
-    echo "$LOG The server does not have the 64-bit binary! Forcing update."
-    update
+  if [ "$BETA" == "x86_64" ]; then
+    echo "$LOG Using 64-bit for server..."
+    if [ -f "$SRCDS_BIN_64" ]; then
+      update
+    fi
   fi
 
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
