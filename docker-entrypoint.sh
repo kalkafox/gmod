@@ -47,10 +47,10 @@ update() {
   permfix
   if [ "$BETA" == "x86-64" ]; then
     log "Starting the update for 64-bit."
-    $SUDO $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta x86-64 +quit
+    $SUDO $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta x86-64 validate +quit
   else
     log "Starting the update for stable version."
-    $SUDO $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta NONE +quit
+    $SUDO $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta NONE validate +quit
   fi
   log "Update finished!"
   log "Checking if d_admin should be downloaded..."
