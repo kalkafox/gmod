@@ -27,14 +27,14 @@ fi
 permfix() {
   log "Changing permissions to $UID and $GID..."
   if [ $UID != 1000 ]; then
-    sudo groupadd -g $GID $USER
+    sudo groupadd -v -g $GID $USER
     sudo useradd -m -u $UID -g $GID $USER
     sudo echo $USER' ALL=(ALL:ALL) NOPASSWD:ALL' > sudouser
     sudo echo 'steam ALL=(ALL:ALL) NOPASSWD:ALL' >> sudouser
-    sudo cp sudouser /etc/sudoers.d
-    sudo find $GAME_DIR ! -user $UID -exec sudo chown -R $UID:$GID {} \;
-    sudo find $HOME_DIR/.steam ! -user $UID -exec sudo chown -R $UID:$GID {} \;
-    sudo cp -R /home/steam/.steam /home/$USER/.steam
+    sudo cp -v sudouser /etc/sudoers.d
+    sudo find $GAME_DIR ! -user $UID -exec sudo chown -c -R $UID:$GID {} \;
+    sudo find $HOME_DIR/.steam ! -user $UID -exec sudo chown -c -R $UID:$GID {} \;
+    sudo cp -v -R /home/steam/.steam /home/$USER/.steam
     SUDO="sudo -u $USER"
     log "Finished with permissions!"
   else
