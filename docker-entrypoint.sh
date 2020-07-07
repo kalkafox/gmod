@@ -58,7 +58,7 @@ function update {
     VERSION="NONE"
     echo "$LOG Server version is now NONE -- only x86_64 is supported for now."
   fi
-  sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $BETA +quit
+  sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta $VERSION +quit
   echo "$LOG Update finished!"
   echo "$LOG Checking if d_admin should be downloaded..."
   if [ "$D_ADMIN" == "true" ]; then
