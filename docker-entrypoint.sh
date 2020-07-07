@@ -78,10 +78,6 @@ function main {
     echo "$LOG We need to download the reqs if it's not already there."
     sudo -u $USER mkdir -p $GARRYSMOD_DIR/lua/bin
     sudo -u $USER wget https://github.com/FredyH/MySQLOO/releases/download/9.6.1/gmsv_mysqloo_linux64.dll -P $GARRYSMOD_DIR/lua/bin
-    sudo -u $USER wget https://gitlab.kalka.io/srcds/unixtermcol/-/archive/master/unixtermcol-master.tar.gz -P $GARRYSMOD_DIR
-    sudo -u $USER tar -C $GARRYSMOD_DIR -zxvf $GARRYSMOD_DIR/unixtermcol-master.tar.gz
-    sudo -u $USER cp -R $GARRYSMOD_DIR/unixtermcol-master/{addons,lua} $GARRYSMOD_DIR
-    sudo -u $USER rm $GARRYSMOD_DIR/unixtermcol-master
     sudo -u $USER git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
   else
     echo "$LOG d_admin is not being downloaded. Moving on!"
@@ -92,8 +88,16 @@ function main {
   fi
   if [ "$BETA" == "x86-64" ]; then
     echo "$LOG Using 64-bit for server..."
+    sudo -u $USER wget https://gitlab.kalka.io/srcds/unixtermcol/-/archive/master/unixtermcol-master.tar.gz -P $GARRYSMOD_DIR
+    sudo -u $USER tar -C $GARRYSMOD_DIR -zxvf $GARRYSMOD_DIR/unixtermcol-master.tar.gz
+    sudo -u $USER cp -R $GARRYSMOD_DIR/unixtermcol-master/{addons,lua} $GARRYSMOD_DIR
+    sudo -u $USER rm {$GARRYSMOD_DIR/unixtermcol-master,$GARRYSMOD_DIR/unixtermcol-master.tar.gz}
     if [ ! -f "$SRCDS_BIN_64" ]; then
       update
+    fi
+  else
+    if [ -d "$ADDONS_DIR/unixtermcol" ]; then
+      sudo -u $USER rm {$GARRYSMOD_DIR/lua/bin/gmsv_xterm_x64.dll,$ADDONS_DIR/unixtermcol}
     fi
   fi
 
