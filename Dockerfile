@@ -4,6 +4,7 @@ ENV UID=1000
 ENV GID=1000
 ENV USER=gmod
 ENV BETA=NONE
+ENV GAMEMODE=sandbox
 
 RUN sudo apt update && sudo apt -y install wget unzip && sudo apt clean
 
