@@ -39,7 +39,8 @@ permfix() {
     log "Finished with permissions!"
   else
     USER=steam
-    sudo chown -c -R steam:steam {$GAME_DIR,$HOME_DIR/.steam}
+    sudo find -D exec $GAME_DIR ! -user steam -exec sudo chown -c -R steam:steam {} \;
+    sudo find -D exec $HOME_DIR ! -user steam -exec sudo chown -c -R steam:steam {} \;
   fi
 }
 
