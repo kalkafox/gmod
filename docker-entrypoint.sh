@@ -61,6 +61,14 @@ function main {
   permfix
   if [ "$D_ADMIN" ]; then
     echo "$LOG d_admin is flagged to be downloaded!"
+    echo "$LOG Do you have a MariaDB/MySQL server? Reply yes or no."
+    read mariadb
+    if [ "$mariadb" == "no" ]; then
+      echo "$LOG You will need one for d_admin to be installed. Re-launch the container without the -e D_ADMIN environment."
+      exit
+    fi
+    echo "$LOG We need to download the reqs if it's not already there."
+    
     sudo -u $USER git clone https://kalka:sg1Cekq_4scyUFMyjzFT@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
   else
     echo "$LOG d_admin is not being downloaded. Moving on!"
