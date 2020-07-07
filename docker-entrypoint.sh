@@ -72,7 +72,7 @@ function main {
   fi
   if [ "$BETA" == "x86_64" ]; then
     echo "$LOG Using 64-bit for server..."
-    if [ -f "$SRCDS_BIN_64" ]; then
+    if [ -z -f "$SRCDS_BIN_64" ]; then
       update
     fi
   fi
