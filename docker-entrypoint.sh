@@ -33,6 +33,7 @@ function permfix {
     sudo find $GAME_DIR ! -user $UID -exec sudo chown -R $UID:$GID {} \;
     sudo find $HOME_DIR/.steam ! -user $UID -exec sudo chown -R $UID:$GID {} \;
     sudo cp -R /home/steam/.steam /home/$USER/.steam
+    SUDO="$SUDO $USER"
     echo "$LOG Finished with permissions!"
   else
     USER=steam
@@ -46,10 +47,10 @@ function update {
   permfix
   if [ "$BETA" == "x86-64" ]; then
     echo "$LOG Starting the update for 64-bit."
-    sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta x86-64 +quit
+    $SUDO $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta x86-64 +quit
   else
     echo "$LOG Starting the update for stable version."
-    sudo -u $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta NONE +quit
+    $SUDO $USER $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta NONE +quit
   fi
   echo "$LOG Update finished!"
   echo "$LOG Checking if d_admin should be downloaded..."
@@ -74,18 +75,18 @@ function main {
     fi
     echo "$LOG **MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
     if [ ! -d "$ADDONS_DIR/d_admin_config" ]; then
-      sudo -u $USER mkdir -p $ADDONS_DIR/d_admin_config/lua/da
-      sudo -u $USER git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
-      sudo -u $USER cp $ADDONS_DIR/d_admin/lua/da/sv_config.lua.template $ADDONS_DIR/d_admin_config/lua/da/sv_config.lua
+      $SUDO $USER mkdir -p $ADDONS_DIR/d_admin_config/lua/da
+      $SUDO $USER git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
+      $SUDO $USER cp $ADDONS_DIR/d_admin/lua/da/sv_config.lua.template $ADDONS_DIR/d_admin_config/lua/da/sv_config.lua
       echo "$LOG Go to d_admin_config in the garrysmod addons directory and edit the file according to your settings, then relaunch the container."
       exit
     fi
     echo "$LOG We need to download the reqs if it's not already there."
-    sudo -u $USER mkdir -p $GARRYSMOD_DIR/lua/bin
+    $SUDO $USER mkdir -p $GARRYSMOD_DIR/lua/bin
     if [ ! -f "$GARRYSMOD_DIR/lua/bin/gmsv_mysqloo_linux64.dll" ]; then
-      sudo -u $USER wget https://github.com/FredyH/MySQLOO/releases/download/9.6.1/gmsv_mysqloo_linux64.dll -P $GARRYSMOD_DIR/lua/bin
+      $SUDO $USER wget https://github.com/FredyH/MySQLOO/releases/download/9.6.1/gmsv_mysqloo_linux64.dll -P $GARRYSMOD_DIR/lua/bin
     fi
-    sudo -u $USER git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
+    $SUDO $USER git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
   else
     echo "$LOG d_admin is not being downloaded. Moving on!"
   fi
@@ -96,17 +97,17 @@ function main {
   if [ "$BETA" == "x86-64" ]; then
     echo "$LOG Using 64-bit for server..."
     if [ ! -d "$ADDONS_DIR/unixtermcol" ]; then
-      sudo -u $USER wget https://gitlab.kalka.io/srcds/unixtermcol/-/archive/master/unixtermcol-master.tar.gz -P $GARRYSMOD_DIR
-      sudo -u $USER tar -C $GARRYSMOD_DIR -zxvf $GARRYSMOD_DIR/unixtermcol-master.tar.gz
-      sudo -u $USER cp -R $GARRYSMOD_DIR/unixtermcol-master/{addons,lua} $GARRYSMOD_DIR
-      sudo -u $USER rm {$GARRYSMOD_DIR/unixtermcol-master,$GARRYSMOD_DIR/unixtermcol-master.tar.gz}
+      $SUDO $USER wget https://gitlab.kalka.io/srcds/unixtermcol/-/archive/master/unixtermcol-master.tar.gz -P $GARRYSMOD_DIR
+      $SUDO $USER tar -C $GARRYSMOD_DIR -zxvf $GARRYSMOD_DIR/unixtermcol-master.tar.gz
+      $SUDO $USER cp -R $GARRYSMOD_DIR/unixtermcol-master/{addons,lua} $GARRYSMOD_DIR
+      $SUDO $USER rm {$GARRYSMOD_DIR/unixtermcol-master,$GARRYSMOD_DIR/unixtermcol-master.tar.gz}
     fi
     if [ ! -f "$SRCDS_BIN_64" ]; then
       update
     fi
   else
     if [ -d "$ADDONS_DIR/unixtermcol" ]; then
-      sudo -u $USER rm {$GARRYSMOD_DIR/lua/bin/gmsv_xterm_x64.dll,$ADDONS_DIR/unixtermcol}
+      $SUDO $USER rm {$GARRYSMOD_DIR/lua/bin/gmsv_xterm_x64.dll,$ADDONS_DIR/unixtermcol}
     fi
   fi
 
@@ -134,4 +135,4 @@ if [ "$BETA" == "x86-64" ]; then
   SRCDS_BIN=$GAME_DIR/srcds_run_x64
 fi
 
-sudo -u $USER $SRCDS_BIN -console $@
+$SUDO $USER $SRCDS_BIN -console $@
