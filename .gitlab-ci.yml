@@ -10,7 +10,7 @@ services:
   - docker:dind
 
 before_script:
-  - cat $CI_REGISTRY_PASSWORD | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY_PASSWORD"
+  - echo $CI_REGISTRY_PASSWORD | docker login -u "$CI_REGISTRY_USER" --password-stdin
 
 build-master:
   stage: build
