@@ -33,14 +33,11 @@ permfix() {
     sudo echo 'steam ALL=(ALL:ALL) NOPASSWD:ALL' >> sudouser
     sudo cp -v sudouser /etc/sudoers.d
     sudo find $GAME_DIR ! -user $UID -exec sudo chown -c -R $UID:$GID {} \;
-    sudo find $HOME_DIR/.steam ! -user $UID -exec sudo chown -c -R $UID:$GID {} \;
-    sudo cp -v -R /home/steam/.steam /home/$USER/.steam
     SUDO="sudo -u $USER"
     log "Finished with permissions!"
   else
     USER=steam
     sudo find -D exec $GAME_DIR ! -user steam -exec sudo chown -c -R steam:steam {} \;
-    sudo find -D exec $HOME_DIR ! -user steam -exec sudo chown -c -R steam:steam {} \;
   fi
 }
 
