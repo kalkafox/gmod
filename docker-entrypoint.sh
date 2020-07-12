@@ -6,6 +6,7 @@ HOME_DIR=/home/steam
 GAME_DIR=$HOME_DIR/$USER
 GARRYSMOD_DIR=$GAME_DIR/garrysmod
 ADDONS_DIR=$GARRYSMOD_DIR/addons
+CSTRIKE_DIR=/opt/cstrike
 SRCDS_BIN=$GAME_DIR/srcds_run
 SRCDS_BIN_64=$GAME_DIR/srcds_run_x64
 STEAMCMD_BIN=/usr/games/steamcmd
@@ -39,6 +40,17 @@ permfix() {
   else
     USER=steam
     sudo find -D exec $GAME_DIR ! -user steam -exec sudo chown -c -R steam:steam {} \;
+  fi
+}
+
+check_for_cstrike() {
+  log "Checking if Counter-Strike: Source is available..."
+  if [ -d $CSTRIKE_DIR ]; then
+    log "Counter-Strike: Source has been detected! Mounting..."
+    echo '"mountcfg"{"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
+  else
+    log "Counter-Strike: Source has not been detected. Will not mount."
+    echo '"mountcfg"{//"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
   fi
 }
 
@@ -112,7 +124,7 @@ main() {
     log "The server is flagged to be updated! Checking now."
     update
   fi
-
+  check_for_cstrike
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
   log $MSG
 }
