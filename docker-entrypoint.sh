@@ -47,11 +47,12 @@ check_for_cstrike() {
   log "Checking if Counter-Strike: Source is available..."
   if [ -d $CSTRIKE_DIR ]; then
     log "Counter-Strike: Source has been detected! Mounting..."
-    sudo echo '"mountcfg"{"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
+    sudo echo '"mountcfg"{"cstrike" "'$CSTRIKE_DIR'"}' > mount.cfg
   else
     log "Counter-Strike: Source has not been detected. Will not mount."
-    sudo echo '"mountcfg"{//"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
+    sudo echo '"mountcfg"{//"cstrike" "'$CSTRIKE_DIR'"}' > mount.cfg
   fi
+  sudo mv mount.cfg $GARRYSMOD_DIR/cfg/mount.cfg
 }
 
 #Update function.
