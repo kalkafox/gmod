@@ -47,10 +47,10 @@ check_for_cstrike() {
   log "Checking if Counter-Strike: Source is available..."
   if [ -d $CSTRIKE_DIR ]; then
     log "Counter-Strike: Source has been detected! Mounting..."
-    echo '"mountcfg"{"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
+    sudo echo '"mountcfg"{"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
   else
     log "Counter-Strike: Source has not been detected. Will not mount."
-    echo '"mountcfg"{//"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
+    sudo echo '"mountcfg"{//"cstrike" "'$CSTRIKE_DIR'"}' > $GARRYSMOD_DIR/cfg/mount.cfg
   fi
 }
 
@@ -117,6 +117,7 @@ d_admin_flag() {
 #Main function.
 main() {
   log "Starting main function..."
+  check_for_cstrike
   permfix
   d_admin_flag
   64_bit_flag
@@ -124,7 +125,6 @@ main() {
     log "The server is flagged to be updated! Checking now."
     update
   fi
-  check_for_cstrike
   MSG="Everything looks good! Starting ${USER^^} server with $PERMS"
   log $MSG
 }
