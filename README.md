@@ -7,7 +7,7 @@ Pull the image from the Docker Hub like so:
 To run without a volume, simply:
 * `docker run --rm -it kalka/gmod +map gm_construct`
 Here's the breakdown of this command:
-	* `--rm` Removes the container after it has been exited automatically. If you wish to have the container persist, remove this fla
+	* `--rm` Removes the container after it has been exited automatically. If you wish to have the container persist, remove this flag.
 	* `-it` Enables interactive mode. If you are wanting the console to print in STDOUT, you MUST have this flag, or you will lock yourself out of your terminal. An alternative flag to daemonize the container is done with `-d`
 	* **Important**: At the end of `kalka/gmod` is where the container will begin to listen for regular SRCDS parameters. This is where you would put your GSLT token, workshop collection ID, etc.
 ### Environment Variables
