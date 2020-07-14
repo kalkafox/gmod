@@ -37,10 +37,10 @@ Here is the full run command for everything:
 #### With Docker Networking
 ```bash
 #!/bin/bash
-mkdir -p $(PWD)/gmod
+mkdir -p $(pwd)/gmod
 docker run --rm -it && \
 	--name=gmod && \
-	-v $(PWD)/gmod:/home/steam/gmod && \
+	-v $(pwd)/gmod:/home/steam/gmod && \
 	-e UID=$(id -u)
 	-e GID=$(id -g)
 	-e D_ADMIN=true && \
@@ -53,11 +53,11 @@ docker run --rm -it && \
 #### With Host Networking
 ```bash
 #!/bin/bash
-mkdir -p $(PWD)/gmod
+mkdir -p $(pwd)/gmod
 docker run --rm -it && \
 	--name=gmod && \
 	--network=host && \
-	-v $(PWD)/gmod:/home/steam/gmod && \
+	-v $(pwd)/gmod:/home/steam/gmod && \
 	-e UID=$(id -u)
 	-e GID=$(id -g)
 	-e D_ADMIN=true && \
