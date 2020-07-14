@@ -22,7 +22,7 @@ To allow the server to persist, run the docker run command with `-v path/to/dir:
 ### Counter-Strike: Source
 To install Counter-Strike: Source into the server, do the following:
 * Run `docker volume create cstrike` - This will create a volume where we will download Counter Strike: Source's resources.
-* Run `docker run --rm -it -v cstike:/opt/cstrike`
+* Run `docker run --rm -it -v cstike:/opt/cstrike kalka/css:base`
 * Once it has finished, mount the `cstrike` volume with `-v cstrike:/opt/cstrike/cstrike` in the docker run command.
 
 ### Networking (IMPORTANT)
