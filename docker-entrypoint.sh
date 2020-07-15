@@ -150,4 +150,12 @@ if [ "$BETA" == "x86-64" ]; then
   SRCDS_BIN=$GAME_DIR/srcds_run_x64
 fi
 
-$SUDO $SRCDS_BIN -console $@
+if [ "$PORT" != "27015" ]; then
+  PORT_FLAG="-port $PORT"
+fi
+
+if [ "$IP" ]; then
+  IP=$IP
+fi
+
+$SUDO $SRCDS_BIN -console $PORT_FLAG $IP $@

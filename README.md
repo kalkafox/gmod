@@ -15,6 +15,7 @@ Here's the breakdown of this command:
 * `UID & GID` Set with `-e UID=$(id -u) -e GID=$(id -g)`. If your UID/GID is not set to 1000 on the host level, set these, otherwise the container will fail to run due to permissions.
 * `UPDATE` Set this if you want to force an update.
 * `BETA` Set with `-e BETA=x86_64`. Allows the Garry's Mod server to be in 64-bit. The only value that works is just `x86_64`.
+* `PORT` Set with `-e PORT=<port>`. Use this if you are intending to use a custom port.
 
 ### Volumes
 To allow the server to persist, run the docker run command with `-v path/to/dir:/home/steam/gmod`
@@ -29,7 +30,10 @@ To install Counter-Strike: Source into the server, do the following:
 OK, so this is where it can get a bit complicated sometimes. If you are running a system with multiple IPs, the way SRCDS connects to Steam servers is via the main IP and that one only, as opposed to an alternative one. This would be fixable by running `-p <alternate:ip>:27015:27015` (breakdown: `-p <ip>:host_listen_port:container_listen_port` [more info here](https://docs.docker.com/engine/tutorials/networkingcontainers/)) but SRCDS seems to ignore it. If you want the server to listen on an alternative IP:
 * Add `-net="host"` in the docker run command
 * Add `-ip <ip>` at the end of the docker run command after `kalka/gmod`
-* (Optional) Add`-port <port>` at the end of the docker run command after `kalka/gmod`
+* (Optional) Add`-port <port>/udp` at the end of the docker run command after `kalka/gmod`
+	* To use RCON for localhost only, we add the following: `-port 127.0.0.1:27015:27015/tcp` USE LOCAL IP ADDRESSES FOR RCON ONLY.
+
+**NOTE:** If you are using the host network instead, **follow the proper SRCDS security guidelines.** Do not ever expose RCON to TCP. Only forward the public IP with the UDP protocol.
 
 ### Run Command
 Here is the full run command for everything:
@@ -46,7 +50,7 @@ docker run --rm -it && \
 	-e D_ADMIN=true && \
 	-e TOKEN=<token> && \
 	-e BETA=x86_64 && \
-	-p 27015:27015 && \
+	-p 27015:27015/udp && \
 	kalka/gmod +gamemode sandbox +map gm_construct +sv_setsteamaccount <your GLST token>
 ```
 
@@ -63,5 +67,7 @@ docker run --rm -it && \
 	-e D_ADMIN=true && \
 	-e TOKEN=<token> && \
 	-e BETA=x86_64 && \
-	kalka/gmod -ip <ip> -port 27015 +gamemode sandbox +map gm_construct +sv_setsteamaccount <your GLST token>
+	-e IP=0.0.0.0
+	-e PORT=27016
+	kalka/gmod -ip <ip> +gamemode sandbox +map gm_construct +sv_setsteamaccount <your GLST token>
 ```

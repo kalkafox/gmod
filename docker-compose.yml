@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  gmod:
+    image: kalka/gmod
+    volumes:
+      - cstrike:/opt/cstrike
+      - $(pwd)/gmod:/home/steam/gmod
+    restart: always
+    environment:
+      BETA=x86_64
+      UID=$(id -u)
+      GID=$(id -g)
+      PORT=27015
+    ports: 27015:27015/udp
+    
+  cstrike:
+    depends_on:
+      - gmod
+    image: kalka/css:base
+    volumes:
+      - cstrike:/opt/cstrike
+  
+  volumes:
+    cstrike: {}
+  

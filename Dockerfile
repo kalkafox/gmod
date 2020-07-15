@@ -5,6 +5,7 @@ ENV GID=1000
 ENV USER=gmod
 ENV BETA=NONE
 ENV GAMEMODE=sandbox
+ENV PORT=27015
 
 RUN sudo apt update && sudo apt -y install wget unzip && sudo apt clean
 
