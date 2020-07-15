@@ -14,7 +14,7 @@ Here's the breakdown of this command:
 * `D_ADMIN` Set with `-e D_ADMIN=true`. Downloads d_admin directly from Globius GitLab. You NEED a token with the permission `read_repository` set for this to work. Set the token with `-e TOKEN=<token>`.
 * `UID & GID` Set with `-e UID=$(id -u) -e GID=$(id -g)`. If your UID/GID is not set to 1000 on the host level, set these, otherwise the container will fail to run due to permissions.
 * `UPDATE` Set this if you want to force an update.
-* `BETA` Set with `-e BETA=x86_64`. Allows the Garry's Mod server to be in 64-bit. The only value that works is just `x86_64`.
+* `BETA` Set with `-e BETA=x86-64`. Allows the Garry's Mod server to be in 64-bit. The only value that works is just `x86-64`.
 * `PORT` Set with `-e PORT=<port>`. Use this if you are intending to use a custom port.
 
 ### Volumes
@@ -49,7 +49,7 @@ docker run --rm -it && \
 	-e GID=$(id -g)
 	-e D_ADMIN=true && \
 	-e TOKEN=<token> && \
-	-e BETA=x86_64 && \
+	-e BETA=x86-64 && \
 	-p 27015:27015/udp && \
 	kalka/gmod +gamemode sandbox +map gm_construct +sv_setsteamaccount <your GLST token>
 ```
@@ -66,7 +66,7 @@ docker run --rm -it && \
 	-e GID=$(id -g)
 	-e D_ADMIN=true && \
 	-e TOKEN=<token> && \
-	-e BETA=x86_64 && \
+	-e BETA=x86-64 && \
 	-e IP=0.0.0.0
 	-e PORT=27016
 	kalka/gmod -ip <ip> +gamemode sandbox +map gm_construct +sv_setsteamaccount <your GLST token>
