@@ -71,7 +71,7 @@ update() {
 }
 
 d_admin_flag() {
-  if [ "$D_ADMIN" ]; then
+  if [ "$D_ADMIN" == "true" ]; then
     log "d_admin is flagged to be downloaded!"
     log "**MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
     if [ ! "$TOKEN" ]; then
