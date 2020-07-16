@@ -42,15 +42,15 @@ Here is the full run command for everything:
 ```bash
 #!/bin/bash
 mkdir -p $(pwd)/gmod
-docker run --rm -it && \
-	--name=gmod && \
-	-v $(pwd)/gmod:/home/steam/gmod && \
-	-e UID=$(id -u)
-	-e GID=$(id -g)
-	-e D_ADMIN=true && \
-	-e TOKEN=<token> && \
-	-e BETA=x86-64 && \
-	-p 27015:27015/udp && \
+docker run --rm -it \
+	--name=gmod \
+	-v $(pwd)/gmod:/home/steam/gmod \
+	-e UID=$(id -u) \
+	-e GID=$(id -g) \
+	-e D_ADMIN=true \
+	-e TOKEN=<token> \
+	-e BETA=x86-64 \
+	-p 27015:27015/udp \
 	kalka/gmod +gamemode sandbox +map gm_construct +sv_setsteamaccount <your GLST token>
 ```
 
@@ -58,16 +58,16 @@ docker run --rm -it && \
 ```bash
 #!/bin/bash
 mkdir -p $(pwd)/gmod
-docker run --rm -it && \
-	--name=gmod && \
-	--network=host && \
-	-v $(pwd)/gmod:/home/steam/gmod && \
-	-e UID=$(id -u)
-	-e GID=$(id -g)
-	-e D_ADMIN=true && \
-	-e TOKEN=<token> && \
-	-e BETA=x86-64 && \
-	-e IP=0.0.0.0
-	-e PORT=27016
+docker run --rm -it \
+	--name=gmod \
+	--network=host \
+	-v $(pwd)/gmod:/home/steam/gmod \
+	-e UID=$(id -u) \
+	-e GID=$(id -g) \
+	-e D_ADMIN=true \
+	-e TOKEN=<token> \
+	-e BETA=x86-64 \
+	-e IP=0.0.0.0 \
+	-e PORT=27016 \
 	kalka/gmod -ip <ip> +gamemode sandbox +map gm_construct +sv_setsteamaccount <your GLST token>
 ```
