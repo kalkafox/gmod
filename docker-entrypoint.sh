@@ -67,10 +67,10 @@ update() {
     $SUDO $STEAMCMD_BIN +login anonymous +force_install_dir $GAME_DIR +app_update 4020 -beta NONE validate +quit
   fi
   log "Update finished!"
-  log "Checking if d_admin should be downloaded..."
 }
 
 d_admin_flag() {
+  log "Checking if d_admin should be downloaded..."
   if [ "$D_ADMIN" == "true" ]; then
     log "d_admin is flagged to be downloaded!"
     log "**MAKE SURE YOU SET THE DATABASE PERMISSIONS CORRECTLY, OR D_ADMIN WILL NOT CONNECT TO THE DB!"
@@ -93,6 +93,29 @@ d_admin_flag() {
     $SUDO git clone https://kalka:$TOKEN@git.globius.org/globius/d_admin.git -b dev $ADDONS_DIR/d_admin
   else
     log "d_admin is not being downloaded. Moving on!"
+  fi
+  if [ -d "$ADDONS_DIR/d_admin_config" ] && [ "$TOKEN" ]; then
+    log "d_admin is already detected, but let's update it to make sure."
+    $SUDO git -C $ADDONS_DIR/d_admin pull
+  fi
+}
+
+darkrp_flag() {
+  if [ "$DARKRP" == "true" ]; then
+    DARKRP_FLAG="+gamemode darkrp"
+    if [ ! -d "$ADDONS_DIR/darkrp" ]; then
+      log "Cloning DarkRP..."
+      $SUDO git clone https://github.com/FPtje/DarkRP.git $ADDONS_DIR/darkrp
+    fi
+    if [ ! -d "$ADDONS_DIR/darkrpmod" ] || [ ! -d "$ADDONS_dir/darkrpmodification "]; then
+      log "Cloning DarkRP mod..."
+      $SUDO git clone https://github.com/FPtje/darkrpmodification.git $ADDONS_DIR/darkrpmod
+    fi
+  fi
+  if [ -d "$ADDONS_DIR/darkrp" ]; then
+    DARKRP_FLAG="+gamemode darkrp"
+    log "Let's make sure DarkRP is up to date."
+    $SUDO git -C $ADDONS_DIR/darkrp pull
   fi
 }
 
@@ -122,6 +145,7 @@ main() {
   permfix
   d_admin_flag
   64_bit_flag
+  darkrp_flag
   if [ "$UPDATE" ]; then
     log "The server is flagged to be updated! Checking now."
     update
@@ -158,4 +182,4 @@ if [ "$IP" ]; then
   IP=$IP
 fi
 
-$SUDO $SRCDS_BIN -console $PORT_FLAG $IP $@
+$SUDO $SRCDS_BIN -console $PORT_FLAG $IP $DARKRP_FLAG $@
