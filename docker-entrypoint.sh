@@ -107,7 +107,7 @@ darkrp_flag() {
       log "Cloning DarkRP..."
       $SUDO git clone https://github.com/FPtje/DarkRP.git $ADDONS_DIR/darkrp
     fi
-    if [ ! -d "$ADDONS_DIR/darkrpmod" ] || [ ! -d "$ADDONS_dir/darkrpmodification "]; then
+    if [ ! -d "$ADDONS_DIR/darkrpmod" ] || [ ! -d "$ADDONS_dir/darkrpmodification " ]; then
       log "Cloning DarkRP mod..."
       $SUDO git clone https://github.com/FPtje/darkrpmodification.git $ADDONS_DIR/darkrpmod
     fi
