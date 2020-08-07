@@ -7,7 +7,7 @@ ENV BETA=NONE
 ENV GAMEMODE=sandbox
 ENV PORT=27015
 
-RUN sudo apt update && sudo apt -y install wget unzip && sudo apt clean
+RUN sudo apt update && sudo apt -y install wget unzip libcurl3-dev && sudo apt clean
 
 COPY ./docker-entrypoint.sh .
 
